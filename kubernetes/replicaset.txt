@@ -1,0 +1,57 @@
+1- Create a ReplicaSet with 2 replicas. The app can be anything.
+# Criar o yaml
+
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: hello-rs
+  labels:
+    app: nginx 
+spec: 
+  replicas: 2
+  selector: 
+     matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:latest
+        ports:
+        - containerPort: 80
+
+# Aplicar o yaml 
+kubectl apply -f replicaset.yaml 
+
+2- Verify a ReplicaSet was created and there are 2 replicas
+
+kubectl get rs 
+
+3- Delete one of the Pods the ReplicaSet has created
+
+#verificar pods 
+kubectl get po 
+
+# deletar pod 
+
+kubectl delete po hello-rs-8m7cj 
+
+4- If you'll list all the Pods now, what will you see?
+
+O pod deletado foi recriado com um novo nome 
+
+5- Remove the ReplicaSet you've created
+
+Kubectl delete -f replicaset.yaml 
+
+6- Verify you've deleted the ReplicaSet
+
+kubectl get rs 
+
+---------------------------------------------------------------------
+
+
+

@@ -1,0 +1,12 @@
+1- Services 01
+
+#Criando o pod com o nginx
+kubectl run my-frist-pod --image=nginx:latest
+
+#criando o serviço
+kubectl create service nodeport svc-teste --tcp=80:8080
+
+#como estou usando kind preciso expor para fora do container kind
+kubectl port-forward svc/nginx-service 8080:80
+
+

@@ -1,0 +1,28 @@
+1- My First Pod
+
+#Criando o pod com o nginx
+kubectl run my-frist-pod --image=nginx:latest
+
+#Verificando se o pod está rodando
+kubectl get po
+
+2  "Killing" Containers
+
+#Entrando no pod
+kubectl exec -it my-frist-pod -- bash
+
+#Apos verificar foi visto que nao existe no pod o ps, então baixamos
+apt-get update && apt-get install -y procps
+
+ps aux
+
+#obs: como já está no pod podemos verificar os processos da seguinte forma
+kubectl exec my-frist-pod -- ps
+
+#matar o processo
+kubectl exec my-frist-pod -- kill 1
+
+3- why did the "RESTARTS" count raised?
+porque matamos o processo do webserver, fazendo com que o pod crashasse e precisasse subir novamente o processo para que o webserver voltasse ao ar
+
+
