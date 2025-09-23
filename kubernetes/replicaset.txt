@@ -52,6 +52,108 @@ Kubectl delete -f replicaset.yaml
 kubectl get rs 
 
 ---------------------------------------------------------------------
+# ReplicaSet 102
+
+1- Create a ReplicaSet with 2 replicas. The app can be anything.
+
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: hello-rs
+  labels:
+    app: nginx
+    type: web
+spec: 
+  replicas: 2
+  selector: 
+     matchLabels:
+      app: nginx
+      type: web 
+  template:
+    metadata:
+      labels:
+        type: web
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:latest
+        ports:
+        - containerPort: 80
+
+# Aplicar o yaml 
+kubectl apply -f replicaset.yaml  
+
+2- Verify a ReplicaSet was created and there are 2 replicas
+
+kubectl get rs 
+
+3- Remove the ReplicaSet but NOT the pods it created
+
+kubectl delete rs hello-rs --cascade=orphan 
+
+4- Verify you've deleted the ReplicaSet but the Pods are still running
+
+kubectl get rs 
+
+kubectl get po 
+--------------------------------------------------------------------------
+# ReplicaSet 103
+
+1- Create a ReplicaSet with 2 replicas. Make sure the label used for the selector and in the Pods is "type=web"
+
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: hello-rs
+  labels:
+    app: nginx
+    type: web
+spec: 
+  replicas: 2
+  selector: 
+     matchLabels:
+      app: nginx
+      type: web 
+  template:
+    metadata:
+      labels:
+        app: nginx
+        type: web
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:latest
+        ports:
+        - containerPort: 80
+       
+# Aplicar o yaml 
+kubectl apply -f yamls/replicaset.yaml 
+
+2- Verify a ReplicaSet was created and there are 2 replicas
+
+kubectl get rs 
+
+3- List the Pods running
+
+kubectl get po 
+
+4- Remove the label (type=web) from one of the Pods created by the ReplicaSet
+
+kubectl label po hello-rs-787qt type-
+
+5- List the Pods running. Are there more Pods running after removing the label? Why?
+
+# Listando os pods e suas labels 
+kubectl get pods -o wide --show-labels
+
+Existem 4 pods rodando, isso ocorre pois o replicaset percebe que a declaração da label type nao está sendo cumprida nos pods e recria os pod para que seja cumprido o que foi declarado no selector. 
+
+6- Verify the ReplicaSet indeed created a new Pod
+
+kubectl describe rs hello-rs
+
+
+
 
 
 

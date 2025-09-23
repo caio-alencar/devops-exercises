@@ -3,16 +3,19 @@ kind: ReplicaSet
 metadata:
   name: hello-rs
   labels:
-    app: nginx 
+    app: nginx
+    type: web
 spec: 
   replicas: 2
   selector: 
      matchLabels:
       app: nginx
+      type: web 
   template:
     metadata:
       labels:
         app: nginx
+        type: web
     spec:
       containers:
       - name: nginx
