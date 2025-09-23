@@ -1,0 +1,35 @@
+# Labels and Selectors 101
+
+1- How to list all the Pods with the label "app=web"?
+
+kubectl get pods --show-labels
+
+2- How to list all objects labeled as "env=staging"?
+
+kubectl get all -l env=staging 
+
+3- How to list all deployments from "env=prod" and "type=web"?
+
+kubectl get deployment -l env=prod,type=web
+
+--------------------------------------------------------------------
+# Node Selectors
+
+1- Apply the label "hw=max" on one of the nodes in your cluster
+
+kubectl label node kind-control-plane hw=max
+
+2- Create and run a Pod called some-pod with the image redis and configure it to use the selector hw=max
+
+#criando o pod 
+kubectl run some-pod --image=redis
+
+#adicionando a label 
+kubectl label po some-pod hw=max
+
+3- Explain why node selectors might be limited
+
+nao da para usar condições mais complexas, apenas condições exatas (iguais). 
+
+
+

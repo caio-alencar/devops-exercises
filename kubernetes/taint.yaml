@@ -1,0 +1,43 @@
+# Taints 101
+
+1- Check if one of the nodes in the cluster has taints (doesn't matter which node)
+
+kubectl describe no kind-control-plane | grep -i taints 
+
+2- Create a taint on one of the nodes in your cluster with key of "app" and value of "web" and effect of "NoSchedule"
+Explain what it does exactly
+Verify it was applied
+
+#Criando o taint 
+kubectl taint no kind-control-plane app=web:NoSchedule
+
+#Verificando se foi criado 
+kubectl describe no kind-control-plane | grep -i taints 
+
+Criou o taint no node, impedindo que os pods que nao tenham a app=web sejam agendados no node 
+
+3- Run a Pod that will be able to run on the node on which you applied the taint
+ 
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: pod-taint
+  name: pod-taint
+spec:
+  containers:
+  - image: nginx
+    name: pod-taint
+    resources: {}
+  tolerations:
+  - key: app
+    operator: Equal
+    value: web
+    effect: NoSchedule
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
+
+kubectl apply -f kubernetes/yamls/pod-taint.yaml 
+
+	

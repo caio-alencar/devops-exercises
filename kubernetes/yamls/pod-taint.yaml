@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: pod-taint
+  name: pod-taint
+spec:
+  containers:
+  - image: nginx
+    name: pod-taint
+    resources: {}
+  tolerations:
+  - key: app
+    operator: Equal 
+    value: web
+    effect: NoSchedule
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
